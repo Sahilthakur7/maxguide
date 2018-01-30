@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import classes from './App.css';
 import './Person/Person.css';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 import Person from './Person/Person';
 
 class App extends Component {
@@ -51,42 +52,47 @@ class App extends Component {
     render() {
         let persons = null;
 
+        let btnClass = '';
+
         if (this.state.showPersons){
             persons= 
                 <div>
                     {this.state.persons.map((person,index) => {
-                        return (
+                        return (<ErrorBoundary key={person.id}>
                             <Person
                                 click={() => this.deletePersonHandler(index)}
                                 name={person.name} 
                                 age={person.age}
-                                key={person.id}
                                 changed = { (event) =>this.nameChangeHandler(event,person.id)}/>
-                        )
+                        </ErrorBoundary>)
                     })}
 
                 </div>
+
+                btnClass = classes.Red;
+
         }
 
-        let classes= [];
+        let assignedClasses= [];
         if(this.state.persons.length <=2){
-            classes.push('red');
+            assignedClasses.push(classes.red);
         }
         if(this.state.persons.length <= 1){
-            classes.push('bold');
+            assignedClasses.push(classes.green);
         }
 
         return (
-                <div className="App">
-                    <p className={classes.join(' ')}>Jaggu bndr, mast klndr</p>
-                    <button 
-                        onClick={ this.togglePersonsHandler}
-                        >
-                        Toggle Persons
-                    </button>
-                    {persons}
-                    <h1>Hello</h1>
-                </div>
+            <div className={classes.App}>
+                <p className={assignedClasses.join(' ')}>Jaggu bndr, mast klndr</p>
+                <button 
+                    onClick={ this.togglePersonsHandler}
+                    className = {btnClass}
+                >
+                    Toggle Persons
+                </button>
+                {persons}
+                <h1>Hello</h1>
+            </div>
         );
     }
 }
