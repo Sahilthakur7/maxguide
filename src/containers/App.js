@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classes from './App.css';
 import '../Components/Persons/Person/Person.css';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
@@ -6,7 +6,11 @@ import Person from '../Components/Persons/Person/Person';
 import Persons from '../Components/Persons/Persons';
 import Cockpit from '../Components/cockpit/Cockpit';
 
-class App extends Component {
+class App extends PureComponent {
+    constructor(props){
+        super(props);
+    }
+    
     state = {
         persons: [
             {id: 1,name: 'Rooney', age: 32},
@@ -66,6 +70,7 @@ class App extends Component {
 
         return (
             <div className={classes.App}>
+                <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
                 <Cockpit showPersons={this.state.showPersons}
                     persons={this.state.persons}
                     clicked={this.togglePersonsHandler}/>
