@@ -5,7 +5,8 @@ import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import Person from '../Components/Persons/Person/Person';
 import Persons from '../Components/Persons/Persons';
 import Cockpit from '../Components/cockpit/Cockpit';
-import WithClass from '../hoc/WithClass';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Aux';
 
 class App extends PureComponent {
     constructor(props){
@@ -18,7 +19,8 @@ class App extends PureComponent {
             {id: 2,name: 'RvP', age: 33},
             {id: 3,name: 'Alexis', age: 29}
         ],
-        showPersons: false
+        showPersons: false,
+        toggleClicked: 0
     }
 
     deletePersonHandler = (personIndex) => {
@@ -48,8 +50,11 @@ class App extends PureComponent {
 
     togglePersonsHandler = () => {
         const doesShow = this.state.showPersons;
-        this.setState({
-            showPersons: !doesShow
+        this.setState( (prevState, props) => {
+            return {
+                showPersons: !doesShow,
+                toggleClicked: prevState.toggleClicked + 1
+            }
         })
     }
 
@@ -70,16 +75,16 @@ class App extends PureComponent {
         }
 
         return (
-            <WithClass classes={classes.App}>
+            <Aux>
                 <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
                 <Cockpit showPersons={this.state.showPersons}
                     persons={this.state.persons}
                     clicked={this.togglePersonsHandler}/>
                 {persons}
                 <h1>Hello</h1>
-            </WithClass>
+            </Aux>
         );
     }
 }
 
-export default App;
+export default withClass(App,classes.App);
